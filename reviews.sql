@@ -33,7 +33,10 @@ CREATE TABLE photos (
   url TEXT
 );
 
+-- add indices --
+CREATE INDEX product_id_idx ON reviews(product_id) WITH (deduplicate_items = off);
 
+--load csv files--
 \COPY reviews FROM '~/Downloads/reviews.csv' DELIMITER ',' CSV HEADER;
 \COPY characteristics FROM '~/Downloads/characteristics.csv' DELIMITER ',' CSV HEADER;
 \COPY char_reviews FROM '~/Downloads/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;

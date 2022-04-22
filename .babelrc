@@ -1,0 +1,6 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": ["@babel/transform-runtime"]
+}
+
+//This file is here to potentially transpile to ES5 later on.
