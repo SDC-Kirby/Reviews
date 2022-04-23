@@ -9,26 +9,59 @@ module.exports = {
       page = 1,
       sort = 'relevance'
     } = req.query;
-    models.getReviews(product_id, count, page, sort, (err, response) => {
+    models.getReviews(product_id, count, page, sort, (err, results ) => {
       if (err) {
         console.log(err);
+      } else {
+        const dataObj = { product_id, count, page, results };
+        res.send(dataObj);
+      }
+    });
+  },
+
+  meta: (req, res) => {
+    const { product_id } = req.query;
+    models.getMeta(product_id, (err, response) => {
+      if (err) {
+        res.send(err);
       } else {
         res.send(response);
       }
     });
   },
 
-  meta: () => {
-    models.getMeta();
+  post: (req, res) => {
+    models.postReview({...req.body}, (err, response) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(response);
+      }
+    });
   },
 
-  postReview: (req, res) => {
-    const { product_id, rating, summary, body, recommend, name, email } = req.body;
-    const date = Date.now();
-    const reported = false;
-    const response = null;
-    const helpfulness = 0;
-    db.query('INSERT INTO reviews VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11', []);
+  helpful: (req, res) => {
+    const { review_id } = req.params;
+    console.log(req.params);
+    models.helpful(review_id, (err, response) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(response);
+      }
+    });
+  },
+
+  report: (req, res) => {
+    const { review_id } = req.params;
+    console.log(review_id);
+    models.report(review_id, (err, response) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(response);
+      }
+    });
   }
 
 };

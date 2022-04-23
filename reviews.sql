@@ -3,13 +3,13 @@ CREATE TABLE reviews (
   product_id INT,
   rating INT,
   date BIGINT,
-  summary TEXT,
+  summary TEXT NOT NULL,
   body TEXT,
   recommended BOOLEAN,
   reported BOOLEAN,
   reviewer_name VARCHAR(60),
   email VARCHAR(60),
-  response TEXT,
+  response TEXT NOT NULL,
   helpfulness INT
 );
 
@@ -19,6 +19,7 @@ CREATE TABLE characteristics (
   product_id INT,
   name VARCHAR(20)
 );
+
 
 CREATE TABLE char_reviews (
   id SERIAL PRIMARY KEY,
@@ -34,7 +35,11 @@ CREATE TABLE photos (
 );
 
 -- add indices --
-CREATE INDEX product_id_idx ON reviews(product_id) WITH (deduplicate_items = off);
+CREATE INDEX product_id_idx ON reviews(product_id);
+CREATE INDEX photos_review_id_idx ON photos(review_id);
+CREATE INDEX char_reviews_review_id_idx on char_reviews(review_id);
+CREATE INDEX char_reviews_characteristic_id_idx on char_reviews(characteristic_id);
+
 
 --load csv files--
 \COPY reviews FROM '~/Downloads/reviews.csv' DELIMITER ',' CSV HEADER;
