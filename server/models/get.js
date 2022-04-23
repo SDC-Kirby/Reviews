@@ -10,6 +10,7 @@ exports.getReviews = (product_id, count, page, sort, callback) => {
   } else {
     sortField = 'helpfulness DESC, date DESC';
   }
+  console.log(sortField);
   const queryString = `
   SELECT
   review_id,
@@ -30,11 +31,12 @@ exports.getReviews = (product_id, count, page, sort, callback) => {
   )
   FROM reviews
   WHERE product_id = $1 AND reported = false
-  ORDER BY $4
+  ORDER BY ${sortField}
   LIMIT $2
   OFFSET $3`;
+  console.log(queryString);
   db.query( queryString,
-    [ product_id, count, offset, sortField],
+    [ product_id, count, offset ],
     (err, result) => {
       if (err) {
         callback(err);
@@ -44,4 +46,29 @@ exports.getReviews = (product_id, count, page, sort, callback) => {
     }
   );
 };
+
+/*
+  SELECT
+  review_id,
+  rating,
+  summary,
+  recommended,
+  response,
+  body,
+  to_timestamp(date / 1000) date,
+  reviewer_name,
+  helpfulness,
+  (SELECT
+    COALESCE(json_agg(row_to_json(photos)), '[]' :: json) photos
+    FROM (
+      SELECT id, url FROM photos WHERE photos.review_id = reviews.review_id
+    )
+    photos
+  )
+  FROM reviews
+  WHERE product_id = 24 AND reported = false
+  ORDER BY helpfulness DESC, date DESC
+  LIMIT 5
+  OFFSET 0
+*/
 

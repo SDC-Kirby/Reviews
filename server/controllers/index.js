@@ -3,6 +3,7 @@ const models = require('../models');
 
 module.exports = {
   get: (req, res) => {
+    console.log('running get');
     const {
       product_id,
       count = 5,
@@ -20,6 +21,7 @@ module.exports = {
   },
 
   meta: (req, res) => {
+    console.log('running meta');
     const { product_id } = req.query;
     models.getMeta(product_id, (err, response) => {
       if (err) {
@@ -31,7 +33,7 @@ module.exports = {
   },
 
   post: (req, res) => {
-    models.postReview({...req.body}, (err, response) => {
+    models.postReview(req.body, (err, response) => {
       if (err) {
         res.send(err);
       } else {
