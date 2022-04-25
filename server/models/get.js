@@ -1,6 +1,6 @@
 const { db } = require('../db');
 
-exports.getReviews = (product_id, count, page, sort, callback) => {
+exports.getReviews = (product_id, count, page, sort) => {
   const offset = (page - 1) * count;
   let sortField;
   if (sort === 'newest') {
@@ -10,13 +10,12 @@ exports.getReviews = (product_id, count, page, sort, callback) => {
   } else {
     sortField = 'helpfulness DESC, date DESC';
   }
-  console.log(sortField);
   const queryString = `
   SELECT
   review_id,
   rating,
   summary,
-  recommended,
+  recommend,
   response,
   body,
   to_timestamp(date / 1000) date,
@@ -34,17 +33,7 @@ exports.getReviews = (product_id, count, page, sort, callback) => {
   ORDER BY ${sortField}
   LIMIT $2
   OFFSET $3`;
-  console.log(queryString);
-  db.query( queryString,
-    [ product_id, count, offset ],
-    (err, result) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(null, result.rows);
-      }
-    }
-  );
+  return db.query(queryString, [ product_id, count, offset ]);
 };
 
 /*

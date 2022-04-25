@@ -1,6 +1,6 @@
 const { db } = require('../db');
 
-exports.getMeta = (product_id, cb) => {
+exports.getMeta = (product_id) => {
   const queryString1 = `
   SELECT
     (SELECT
@@ -24,22 +24,14 @@ exports.getMeta = (product_id, cb) => {
     ) ratings),
 
     (SELECT
-    json_object_agg(recommended, count) AS recommended
+    json_object_agg(recommend, count) AS recommended
     FROM (
-      SELECT recommended, COUNT(recommended) AS count
+      SELECT recommend, COUNT(recommend) AS count
       FROM reviews
       WHERE product_id=$1
-      GROUP BY recommended
+      GROUP BY recommend
     ) recommended)
   ;`;
 
-  db.query(queryString1, [product_id], (err, results) => {
-    if (err) {
-      cb(err);
-    } else {
-      const data = results.rows[0];
-      data.product_id = product_id;
-      cb(null, data);
-    }
-  });
+  return db.query(queryString1, [product_id]);
 };
