@@ -6,10 +6,7 @@
     "postpretty": "yarn lint --fix"
   },
   "dependencies": {
-    "express": "^4.17.3",
-    "k6": "^0.0.0",
-    "pg": "^8.7.3",
-    "pg-promise": "^10.11.1"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",

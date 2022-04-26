@@ -7,7 +7,6 @@ module.exports = {
     models.getReviews(product_id, count, page, sort)
       .then(data => {
         const results = data.rows;
-        console.log(results);
         res.header('Access-Control-Allow-Origin', '*');
         res.send({product_id, count, page, results});
       })
@@ -31,13 +30,11 @@ module.exports = {
     let rev;
     models.postReview(req.body)
       .then(result => {
-        console.log('Submitted review details; now submitting photos');
         rev = result.rows[0];
         console.log(rev.review_id);
         return Promise.all(photos.map(photo => models.postPhoto(rev.review_id, photo)));
       })
       .then(result => {
-        console.log('Submitted photos; now submitting characteristics');
         const promises = [];
         for (let id in characteristics) {
           promises.push(models.postChar(rev.review_id, id, characteristics[id]));
@@ -48,7 +45,7 @@ module.exports = {
         res.set('Access-Control-Allow-Origin', '*');
         res.send(response);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log("rollback failed", err));
   },
 
   helpful: (req, res) => {
@@ -61,7 +58,7 @@ module.exports = {
   report: (req, res) => {
     const { review_id } = req.params;
     models.report(review_id)
-      .then(response => res.send(response.rows).status(200))
+      .then(response => res.send(response.rows))
       .catch(err => console.log(err));
   }
 
