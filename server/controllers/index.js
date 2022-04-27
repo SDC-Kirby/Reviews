@@ -1,14 +1,18 @@
 const { db } = require('../db');
 const models = require('../models');
 
+const endpoints = [];
+
 module.exports = {
   get: (req, res) => {
+    endpoints.push(req.query.product_id);
+    console.log(endpoints);
     const { product_id, count = 5, page = 1, sort = 'relevance' } = req.query;
     models.getReviews(product_id, count, page, sort)
       .then(data => {
         const results = data.rows;
         res.header('Access-Control-Allow-Origin', '*');
-        res.send({product_id, count, page, results});
+        res.status(200).send({product_id, count, page, results});
       })
       .catch(err => res.send(err));
   },
@@ -20,7 +24,7 @@ module.exports = {
         let data = response.rows[0];
         data.product_id = product_id;
         res.header("Access-Control-Allow-Origin", "*");
-        res.send(data);
+        res.status(200).send(data);
       })
       .catch(err => res.send(err));
   },
