@@ -16,7 +16,7 @@ exports.getMeta = (product_id) => {
       ) AS id_and_value),
 
     (SELECT
-    json_object_agg(rating, count) AS ratings
+    COALESCE(json_object_agg(rating, count), '{}'::json) AS ratings
     FROM (
       SELECT rating, COUNT(rating) AS count
       FROM reviews
@@ -25,7 +25,7 @@ exports.getMeta = (product_id) => {
     ) ratings),
 
     (SELECT
-    json_object_agg(recommend, count) AS recommended
+    COALESCE(json_object_agg(recommend, count), '{}'::json) AS recommended
     FROM (
       SELECT recommend, COUNT(recommend) AS count
       FROM reviews
