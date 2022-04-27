@@ -5,8 +5,8 @@ const endpoints = [];
 
 module.exports = {
   get: (req, res) => {
-    endpoints.push(req.query.product_id);
-    console.log(endpoints);
+    //endpoints.push(req.query.product_id);
+    //console.log(endpoints);
     const { product_id, count = 5, page = 1, sort = 'relevance' } = req.query;
     models.getReviews(product_id, count, page, sort)
       .then(data => {
