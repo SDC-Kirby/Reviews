@@ -4,7 +4,7 @@ const models = require('../models');
 const endpoints = [];
 
 module.exports = {
-  get: (req, res) => {
+  get: (req, res, next) => {
     //endpoints.push(req.query.product_id);
     //console.log(endpoints);
     const { product_id, count = 5, page = 1, sort = 'relevance' } = req.query;
@@ -14,10 +14,10 @@ module.exports = {
         res.header('Access-Control-Allow-Origin', '*');
         res.status(200).send({product_id, count, page, results});
       })
-      .catch(err => res.send(err));
+      .catch(err => next(err));
   },
 
-  meta: (req, res) => {
+  meta: (req, res, next) => {
     const { product_id } = req.query;
     models.getMeta(product_id)
       .then(response => {
@@ -26,10 +26,10 @@ module.exports = {
         res.header("Access-Control-Allow-Origin", "*");
         res.status(200).send(data);
       })
-      .catch(err => res.send(err));
+      .catch(err => next(err));
   },
 
-  post: (req, res) => {
+  post: (req, res, next) => {
     const { photos, characteristics } = req.body;
     let rev;
     models.postReview(req.body)
@@ -49,7 +49,7 @@ module.exports = {
         res.set('Access-Control-Allow-Origin', '*');
         res.send(response);
       })
-      .catch(err => console.log("rollback failed", err));
+      .catch(err => next(err));
   },
 
   helpful: (req, res) => {
