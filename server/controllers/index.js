@@ -23,7 +23,6 @@ module.exports = {
       .then(response => {
         let data = response.rows[0];
         data.product_id = product_id;
-        console.log(data);
         res.header("Access-Control-Allow-Origin", "*");
         res.status(200).send(data);
       })

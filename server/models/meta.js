@@ -5,7 +5,7 @@ exports.getMeta = (product_id) => {
 
   SELECT
     (SELECT
-    json_object_agg(name, json_build_object('id', id, 'value', value)) AS characteristics
+    COALESCE(json_object_agg(name, json_build_object('id', id, 'value', value)), '{}'::json) AS characteristics
     FROM (
       SELECT c.name as NAME, c.id AS id, AVG(c_r.rating) AS value
       FROM char_reviews AS c_r
