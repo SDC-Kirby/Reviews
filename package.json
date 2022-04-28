@@ -6,7 +6,9 @@
     "postpretty": "yarn lint --fix"
   },
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "newrelic": "^8.10.0",
+    "pg": "^8.7.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
