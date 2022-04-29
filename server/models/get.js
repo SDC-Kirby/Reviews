@@ -41,7 +41,7 @@ exports.getReviews = (product_id, count, page, sort) => {
   review_id,
   rating,
   summary,
-  recommended,
+  recommend,
   response,
   body,
   to_timestamp(date / 1000) date,
@@ -55,7 +55,7 @@ exports.getReviews = (product_id, count, page, sort) => {
     photos
   )
   FROM reviews
-  WHERE product_id = 24 AND reported = false
+  WHERE product_id = 500222 AND reported = false
   ORDER BY helpfulness DESC, date DESC
   LIMIT 5
   OFFSET 0
