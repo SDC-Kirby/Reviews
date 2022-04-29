@@ -6,8 +6,7 @@ const db = new Pool({
   host: HOST,
   database: DB,
   port: DBPORT,
-  password: PWD,
-  max: 50
+  password: PWD
 });
 
 db.connect((err) => console.log(err));
